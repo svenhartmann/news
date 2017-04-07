@@ -16,7 +16,7 @@ namespace GeorgRinger\News\Controller;
 
 use GeorgRinger\News\Utility\Cache;
 use GeorgRinger\News\Utility\Page;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Controller of news records
