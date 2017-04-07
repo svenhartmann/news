@@ -138,15 +138,6 @@ class NewsController extends NewsBaseController {
 	 */
 	protected function overwriteDemandObject($demand, $overwriteDemand) {
 
-		foreach ($overwriteDemand as $property => $_) {
-			$lowerCasedProperty = strtolower($property);
-			$lowerCasedIgnoreForOverwrite = array_change_key_case($this->ignoredSettingsForOverride, CASE_LOWER);
-
-			if (in_array($lowerCasedProperty, $lowerCasedIgnoreForOverwrite)) {
-				unset($overwriteDemand[$property]);
-			}
-		}
-
 		foreach ($overwriteDemand as $propertyName => $propertyValue) {
 			if ($this->isPropertyAllowedToOverwrite($propertyName)
 				&& ($propertyValue !== '' || $this->settings['allowEmptyStringsForOverwriteDemand'])) {
