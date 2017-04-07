@@ -155,7 +155,7 @@ class NewsController extends NewsBaseController {
 	 */
 	private function isPropertyAllowedToOverwrite($property) {
 		$lowerCasedProperty = strtolower($property);
-		$lowerCasedIgnoreForOverwrite = array_change_key_case($this->ignoredSettingsForOverride, CASE_LOWER);
+		$lowerCasedIgnoreForOverwrite = array_map('strtolower', $this->ignoredSettingsForOverride);
 
 		return (FALSE === in_array($lowerCasedProperty, $lowerCasedIgnoreForOverwrite));
 	}
