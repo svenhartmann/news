@@ -138,16 +138,26 @@ class NewsController extends NewsBaseController {
 	 */
 	protected function overwriteDemandObject($demand, $overwriteDemand) {
 
-		foreach($this->ignoredSettingsForOverride as $property) {
-			unset($overwriteDemand[$property]);
-		}
-
 		foreach ($overwriteDemand as $propertyName => $propertyValue) {
-			if ($propertyValue !== '' || $this->settings['allowEmptyStringsForOverwriteDemand']) {
+			if ($this->isPropertyAllowedToOverwrite($propertyName)
+				&& ($propertyValue !== '' || $this->settings['allowEmptyStringsForOverwriteDemand'])) {
 				\TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($demand, $propertyName, $propertyValue);
 			}
 		}
 		return $demand;
+	}
+
+	/**
+	 * Security hotfix: https://www.ambionics.io/blog/typo3-news-module-sqli
+	 *
+	 * @param $property
+	 * @return bool
+	 */
+	private function isPropertyAllowedToOverwrite($property) {
+		$lowerCasedProperty = strtolower($property);
+		$lowerCasedIgnoreForOverwrite = array_map('strtolower', $this->ignoredSettingsForOverride);
+
+		return (FALSE === in_array($lowerCasedProperty, $lowerCasedIgnoreForOverwrite));
 	}
 
 	/**
